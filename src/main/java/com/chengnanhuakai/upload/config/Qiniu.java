@@ -1,0 +1,23 @@
+package com.chengnanhuakai.upload.config;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+/**
+ * @ClassName Qiniu
+ * @Description 七牛云配置信息（个人中心--秘钥管理）
+ * @Author Aaryn
+ * @Date 2018/9/20 10:22
+ * @Version 1.0
+ */
+@Component
+@ConfigurationProperties(prefix = "qiniu")
+@Data
+public class Qiniu {
+
+    private String accessKey;   // 七牛云秘钥AK
+    private String secretKey;   // 七牛云秘钥SK
+    private String bucket;      // 七牛云空间名称
+
+}
