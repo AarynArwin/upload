@@ -53,10 +53,11 @@ public class ImageUploadController {
     @RequestMapping(value = "/simple",method = RequestMethod.GET)
     @ApiOperation(value = "生成七牛云上传简单凭证")
     public String uploadTokenSimple(){
-        Auth auth = getAuth();
-        String upToken = auth.uploadToken(qiniu.getBucket());
-        logger.info("upload---" + upToken);
-        return upToken;
+//        Auth auth = getAuth();
+//        String upToken = auth.uploadToken(qiniu.getBucket());
+//        logger.info("upload---" + upToken);
+//        return upToken;
+        return "生成凭证";
     }
 
 
@@ -83,10 +84,11 @@ public class ImageUploadController {
     @RequestMapping(value = "/override",method = RequestMethod.GET)
     public String uploadTokenOverride(String fileKey){
         // Parameter Calibration
-        Auth auth = getAuth();
-        String upToken = auth.uploadToken(qiniu.getBucket(), fileKey);
-
-        return upToken;
+//        Auth auth = getAuth();
+//        String upToken = auth.uploadToken(qiniu.getBucket(), fileKey);
+//
+//        return upToken;
+        return "拦截";
     }
 
     /**
