@@ -1,6 +1,5 @@
 package com.chengnanhuakai.upload.filter;
 
-import com.chengnanhuakai.upload.controller.ImageUploadController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
