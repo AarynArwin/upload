@@ -57,24 +57,10 @@ public class ImageUploadController {
 //        String upToken = auth.uploadToken(qiniu.getBucket());
 //        logger.info("upload---" + upToken);
 //        return upToken;
+        logger.info("执行生成七牛云上传简单凭证");
         return "生成凭证";
     }
 
-
-    /**
-     * 创建七牛云上传凭证所需auth
-     * @return
-     */
-    private Auth getAuth() {
-        String accessKey = qiniu.getAccessKey();
-        String secretKey = qiniu.getSecretKey();
-        String bucket = qiniu.getBucket();
-        // Parameter Calibration
-        if (StringUtils.isEmpty(accessKey) || StringUtils.isEmpty(secretKey) || StringUtils.isEmpty(bucket)){
-            throw new QiniuException("Lack Of Key Parameters!");
-        }
-        return Auth.create(accessKey, secretKey);
-    }
 
     /**
      * 生成七牛云覆盖上传凭证
