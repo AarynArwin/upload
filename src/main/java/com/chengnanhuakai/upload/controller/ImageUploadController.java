@@ -2,6 +2,7 @@ package com.chengnanhuakai.upload.controller;
 
 import com.chengnanhuakai.upload.config.MysqlConfig;
 import com.chengnanhuakai.upload.config.Qiniu;
+import com.chengnanhuakai.upload.service.QiniuyunService;
 import com.chengnanhuakai.upload.utils.QiniuException;
 import com.google.gson.Gson;
 import com.qiniu.common.Zone;
@@ -15,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,10 +43,8 @@ public class ImageUploadController {
 
     private static final Logger logger = LoggerFactory.getLogger(ImageUploadController.class);
 
-    @Resource
-    private Qiniu qiniu;
-
-
+    @Autowired
+    private QiniuyunService qiniuyunService;
 
     /**
      * 生成七牛云简单上传凭证
@@ -53,12 +53,8 @@ public class ImageUploadController {
     @RequestMapping(value = "/simple",method = RequestMethod.GET)
     @ApiOperation(value = "生成七牛云上传简单凭证")
     public String uploadTokenSimple(){
-//        Auth auth = getAuth();
-//        String upToken = auth.uploadToken(qiniu.getBucket());
-//        logger.info("upload---" + upToken);
-//        return upToken;
-        logger.info("执行生成七牛云上传简单凭证");
-        return "生成凭证";
+        String simpleToken = qiniuyunService.getSimpleToken();
+        return simpleToken;
     }
 
 
@@ -69,12 +65,8 @@ public class ImageUploadController {
      */
     @RequestMapping(value = "/override",method = RequestMethod.GET)
     public String uploadTokenOverride(String fileKey){
-        // Parameter Calibration
-//        Auth auth = getAuth();
-//        String upToken = auth.uploadToken(qiniu.getBucket(), fileKey);
-//
-//        return upToken;
-        return "拦截";
+        String overrideToken = qiniuyunService.getOverrideToken(fileKey);
+        return overrideToken;
     }
 
     /**
@@ -82,49 +74,21 @@ public class ImageUploadController {
      * @return  上传凭证
      */
     public String uploadTokenWithReturn(){
-        Auth auth = getAuth();
-        StringMap putPolicy = new StringMap();
-        putPolicy.put("returnBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"bucket\":\"$(bucket)\",\"fsize\":$(fsize)}");
-        long expireSeconds = 3600;
-        String upToken = auth.uploadToken(qiniu.getBucket(), null, expireSeconds, putPolicy);
-
-        return upToken;
+        String withReturnToken = qiniuyunService.getWithReturnToken();
+        return withReturnToken;
     }
 
     @RequestMapping(value = "/uploadImage",method = RequestMethod.POST)
-    @ApiOperation(value = "上传本地文件到七牛云中，待补充从本地获取文件路径以及将上传凭证保存至本地")
-    public void uploadImage(@RequestParam(value = "uploadfile") MultipartFile multipartFile) throws Exception{
-        //String uploadToken = uploadTokenSimple();
-        String uploadToken = uploadTokenWithReturn();
-        //构造一个带指定Zone对象的配置类
-        Configuration cfg = new Configuration(Zone.zone2());
-        UploadManager uploadManager = new UploadManager(cfg);
-        // TODO 文件路径为上传方传递
-        //String localFilePath = "C:\\Users\\Aaryn\\Pictures\\悦心盒子\\320.png";
-        // 获取文件名称
-        String originalFilename = multipartFile.getOriginalFilename();
-
-        String uuid = UUID.randomUUID().toString();
-
-
-        InputStream inputStream = multipartFile.getInputStream();
-
-
-        // 默认不指定key的情况下，以文件内容的hash值作为文件名
-        // 使用（文件前缀+UUID+文件名称）作为文件的空间key，防止出现key重复
-        String key = "image/upload/" + uuid + "/" + originalFilename;
+    @ApiOperation(value = "上传本地文件到七牛云")
+    public void uploadImage(@RequestParam(value = "uploadfile") MultipartFile multipartFile){
         try {
-            Response response = uploadManager.put(inputStream, key, uploadToken,null,null);
-            //解析上传成功的结果
-            System.out.println("上传结果为" + response.getInfo());
-            DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-            //System.out.println("解析结果为" + putRet.toString());
-            logger.info("解析结果为--" + putRet.toString());
-        } catch (QiniuException ex) {
+            qiniuyunService.uploadImageToQiniuyun(multipartFile);
+        }catch (QiniuException e){
+            logger.error("上传图片异常" + e.toString());
 
-            System.err.println(ex.toString());
+        }catch (Exception e){
+            logger.error("未知错误" + e.toString());
         }
-
     }
 
     @RequestMapping(value = "/callback",method = RequestMethod.GET)

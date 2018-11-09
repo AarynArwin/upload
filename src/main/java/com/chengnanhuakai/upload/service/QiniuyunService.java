@@ -1,5 +1,7 @@
 package com.chengnanhuakai.upload.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * @ClassName QiniuyunService
  * @Description TODO
@@ -26,4 +28,10 @@ public interface QiniuyunService {
      * @return  七牛云上传凭证（附带回调信息）
      */
     String getWithReturnToken();
+
+    /**
+     * 上传图片到七牛云
+     * @param multipartFile
+     */
+    void uploadImageToQiniuyun(MultipartFile multipartFile) throws Exception;
 }
