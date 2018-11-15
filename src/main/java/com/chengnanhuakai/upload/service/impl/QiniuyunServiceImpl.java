@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.xml.bind.JAXB;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -39,7 +40,7 @@ public class QiniuyunServiceImpl implements QiniuyunService {
     @Resource
     private Qiniu qiniu;
 
-    // 获取auth
+    /** 获取auth */
     private final Auth auth = QiNiuYunUtil.getAuth(qiniu);
 
     @Override

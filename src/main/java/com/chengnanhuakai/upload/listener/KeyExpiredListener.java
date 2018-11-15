@@ -13,15 +13,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class KeyExpiredListener implements MessageListener {
-
-
-
     @Override
     public void onMessage(Message message, byte[] pattern){
-        byte[] body = message.getBody();// 请使用valueSerializer
+        /* 请使用valueSerializer */
+        byte[] body = message.getBody();
         byte[] channel = message.getChannel();
-        String topic = new String(channel);     // 监听主题
-        String itemValue = new String(body);    // 过期键
+        /* 监听主题 */
+        String topic = new String(channel);
+        /* 过期键 */
+        String itemValue = new String(body);
         try {
             // 监听过期事件选择合适的通知类型
             System.out.println("执行过期监控");

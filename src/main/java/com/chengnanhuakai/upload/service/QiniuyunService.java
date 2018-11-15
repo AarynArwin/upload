@@ -32,6 +32,7 @@ public interface QiniuyunService {
     /**
      * 上传图片到七牛云
      * @param multipartFile
+     * @throws Exception
      */
     void uploadImageToQiniuyun(MultipartFile multipartFile) throws Exception;
 }

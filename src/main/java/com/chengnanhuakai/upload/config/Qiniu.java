@@ -16,8 +16,11 @@ import org.springframework.stereotype.Component;
 @Data
 public class Qiniu {
 
-    private String accessKey;   // 七牛云秘钥AK
-    private String secretKey;   // 七牛云秘钥SK
-    private String bucket;      // 七牛云空间名称
+    /** 七牛云秘钥AK */
+    private String accessKey;
+    /** 七牛云秘钥SK */
+    private String secretKey;
+    /** 七牛云空间名称 */
+    private String bucket;
 
 }

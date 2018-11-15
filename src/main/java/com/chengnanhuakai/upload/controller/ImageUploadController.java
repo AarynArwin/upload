@@ -1,33 +1,19 @@
 package com.chengnanhuakai.upload.controller;
 
-import com.chengnanhuakai.upload.config.MysqlConfig;
-import com.chengnanhuakai.upload.config.Qiniu;
 import com.chengnanhuakai.upload.service.QiniuyunService;
 import com.chengnanhuakai.upload.utils.QiniuException;
-import com.google.gson.Gson;
-import com.qiniu.common.Zone;
-import com.qiniu.http.Response;
-import com.qiniu.storage.Configuration;
-import com.qiniu.storage.UploadManager;
-import com.qiniu.storage.model.DefaultPutRet;
-import com.qiniu.util.Auth;
-import com.qiniu.util.StringMap;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
-import java.util.UUID;
 
 /**
  * @ClassName ImageUploadController
