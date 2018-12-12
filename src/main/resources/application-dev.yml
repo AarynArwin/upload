@@ -31,5 +31,5 @@ logging:
 # 七牛云配置
 qiniu:
   accessKey:
-  secretKey: 
+  secretKey:
   bucket: chengnan
