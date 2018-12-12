@@ -16,6 +16,4 @@ public class TestJedis {
 
     @Autowired
     StringRedisTemplate redisTemplate;
-
-
 }

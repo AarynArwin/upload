@@ -2,10 +2,8 @@ package com.chengnanhuakai.upload.service.impl;
 
 import com.chengnanhuakai.upload.config.Qiniu;
 import com.chengnanhuakai.upload.constants.QiNiuYunConstants;
-import com.chengnanhuakai.upload.controller.ImageUploadController;
 import com.chengnanhuakai.upload.service.QiniuyunService;
 import com.chengnanhuakai.upload.utils.QiNiuYunUtil;
-import com.chengnanhuakai.upload.utils.QiniuException;
 import com.google.gson.Gson;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.xml.bind.JAXB;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,13 +26,13 @@ import java.util.UUID;
 
 /**
  * @ClassName QiniuyunServiceImpl
- * @Description TODO
+ * @Description 七牛云服务
  * @Author Aaryn
  * @Date 2018/11/7 11:33
  * @Version 1.0
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class QiniuyunServiceImpl implements QiniuyunService {
 
     private static final Logger logger = LoggerFactory.getLogger(QiniuyunServiceImpl.class);

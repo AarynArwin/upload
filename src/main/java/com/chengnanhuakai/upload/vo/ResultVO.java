@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * @ClassName ResultVO
- * @Description TODO
+ * @Description 统一响应体
  * @Author Aaryn
  * @Date 2018/12/11 16:33
  * @Version 1.0

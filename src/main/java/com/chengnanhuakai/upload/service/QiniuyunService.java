@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * @ClassName QiniuyunService
- * @Description TODO
+ * @Description 七牛云服务
  * @Author Aaryn
  * @Date 2018/11/7 11:30
  * @Version 1.0
