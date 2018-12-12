@@ -2,6 +2,8 @@ package com.chengnanhuakai.upload.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 /**
  * @ClassName QiniuyunService
  * @Description TODO
@@ -34,5 +36,5 @@ public interface QiniuyunService {
      * @param multipartFile
      * @throws Exception
      */
-    void uploadImageToQiniuyun(MultipartFile multipartFile) throws Exception;
+    Map uploadImageToQiniuyun(MultipartFile multipartFile) throws Exception;
 }

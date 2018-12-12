@@ -1,12 +1,14 @@
 package com.chengnanhuakai.upload.controller;
 
 import com.chengnanhuakai.upload.service.QiniuyunService;
-import com.chengnanhuakai.upload.utils.QiniuException;
+import com.chengnanhuakai.upload.vo.ResultVO;
+import com.qiniu.common.QiniuException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @ClassName ImageUploadController
@@ -64,17 +67,24 @@ public class ImageUploadController {
         return withReturnToken;
     }
 
-    @RequestMapping(value = "/uploadImage",method = RequestMethod.POST)
-    @ApiOperation(value = "上传本地文件到七牛云")
-    public void uploadImage(@RequestParam(value = "uploadfile") MultipartFile multipartFile){
+    @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
+    @ApiOperation(value = "上传本地文件到七牛云中，待补充从本地获取文件路径以及将上传凭证保存至本地")
+    public String uploadImage(@RequestParam(value = "file") MultipartFile file, Model model) throws Exception {
+        ResultVO resultVO = new ResultVO();
         try {
-            qiniuyunService.uploadImageToQiniuyun(multipartFile);
-        }catch (QiniuException e){
-            logger.error("上传图片异常" + e.toString());
-
-        }catch (Exception e){
-            logger.error("未知错误" + e.toString());
+            Map map = qiniuyunService.uploadImageToQiniuyun(file);
+            resultVO.setData(map);
+            model.addAttribute("data", resultVO);
+        } catch (QiniuException e) {
+            logger.error("七牛云上传文件异常" + e.getMessage());
+            resultVO.setErrorMsg("七牛云上传文件异常");
+            resultVO.setSuccess(false);
+        } catch (Exception e) {
+            logger.error("七牛云上传文件异常" + e.getMessage());
+            resultVO.setErrorMsg("七牛云上传文件异常");
+            resultVO.setSuccess(false);
         }
+        return "success";
     }
 
     @RequestMapping(value = "/callback",method = RequestMethod.GET)

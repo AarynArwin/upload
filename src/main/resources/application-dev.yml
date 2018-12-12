@@ -17,21 +17,19 @@ spring:
         min-idle: 0
         max-wait: -1ms
     timeout: 2000ms
-  # 定义字符编码
-  http:
-    encoding:
-      charset: utf-8
-      enabled: true
-      force: true
+  mvc:
+    view:
+      prefix: /templates
+      suffix: .html
 
 
-
-# 定义日志
 logging:
   config: logback.xml
   level:
     com.chengnanhuakai.upload.mapper: trace
 
-
-
 # 七牛云配置
+qiniu:
+  accessKey:
+  secretKey: 
+  bucket: chengnan

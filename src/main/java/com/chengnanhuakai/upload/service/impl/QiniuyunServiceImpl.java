@@ -1,6 +1,7 @@
 package com.chengnanhuakai.upload.service.impl;
 
 import com.chengnanhuakai.upload.config.Qiniu;
+import com.chengnanhuakai.upload.constants.QiNiuYunConstants;
 import com.chengnanhuakai.upload.controller.ImageUploadController;
 import com.chengnanhuakai.upload.service.QiniuyunService;
 import com.chengnanhuakai.upload.utils.QiNiuYunUtil;
@@ -22,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.xml.bind.JAXB;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -68,26 +71,27 @@ public class QiniuyunServiceImpl implements QiniuyunService {
     }
 
     @Override
-    public void uploadImageToQiniuyun(MultipartFile multipartFile) throws Exception{
-        String uploadToken = getWithReturnToken();
+    public Map uploadImageToQiniuyun(MultipartFile multipartFile) throws Exception{
+        String uploadToken = this.getWithReturnToken();
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone2());
         UploadManager uploadManager = new UploadManager(cfg);
         // 获取文件名称
         String originalFilename = multipartFile.getOriginalFilename();
-        // 生成字符串
+        // 生成UUID作为文件的KEY值防止出现上传文件时文件名重复
         String uuid = UUID.randomUUID().toString();
-        // 获取要上传的文件
         InputStream inputStream = multipartFile.getInputStream();
         // 默认不指定key的情况下，以文件内容的hash值作为文件名
         // 使用（文件前缀+UUID+文件名称）作为文件的空间key，防止出现key重复
         String key = "image/upload/" + uuid + "/" + originalFilename;
-        // 上传文件
+        Map<String,String> imageMap = new HashMap(16);
         Response response = uploadManager.put(inputStream, key, uploadToken,null,null);
         //解析上传成功的结果
-        logger.info("上传结果为" + response.getInfo());
         DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
         logger.info("解析结果为--" + putRet.toString());
+        imageMap.put(QiNiuYunConstants.IMAGE_URL_HTTP_KEY,QiNiuYunConstants.IMAGE_URL_HTTP_VALUE + key);
+        imageMap.put(QiNiuYunConstants.IMAGE_URL_HTTPS_KEY,QiNiuYunConstants.IMAGE_URL_HTTPS_VALUE + key);
+        return imageMap;
     }
 
 
