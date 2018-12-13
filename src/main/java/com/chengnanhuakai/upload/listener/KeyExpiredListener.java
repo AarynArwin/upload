@@ -1,5 +1,7 @@
 package com.chengnanhuakai.upload.listener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class KeyExpiredListener implements MessageListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(KeyExpiredListener.class);
+
+
     @Override
     public void onMessage(Message message, byte[] pattern){
         /* 请使用valueSerializer */
@@ -25,6 +31,7 @@ public class KeyExpiredListener implements MessageListener {
         try {
             // 监听过期事件选择合适的通知类型
             System.out.println("执行过期监控");
+            logger.info("过期键为-->" + itemValue);
         } catch (Exception e) {
             e.printStackTrace();
         }

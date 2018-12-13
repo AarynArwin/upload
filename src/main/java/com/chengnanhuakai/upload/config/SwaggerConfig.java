@@ -28,7 +28,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 // 指定要生成api接口的包路径，这里把controller作为包路径，生成controller中的所有接口
-                .apis(RequestHandlerSelectors.basePackage("com.chengnanhuakai.upload.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.chengnanhuakai.upload.listener"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -44,7 +44,7 @@ public class SwaggerConfig {
                 // 设置接口描述
                 .description("七牛云图片上传接口展示")
                 // 设置联系方式
-                .contact("南城，" + "http://www.chengnanhuakai.com")
+                .contact("南城，" + "http://blog.geekerit.com")
                 // 设置版本
                 .version("1.0")
                 // 构建
