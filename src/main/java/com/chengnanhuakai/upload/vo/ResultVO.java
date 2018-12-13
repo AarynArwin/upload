@@ -23,19 +23,18 @@ public class ResultVO<T> implements Serializable {
     @ApiModelProperty(value = "错误信息")
     private String errorMsg;
 
-    @ApiModelProperty(value = "http 响应码")
-    private Integer responseCode;
-
     @ApiModelProperty(value = "响应数据")
     private T data;
 
     public ResultVO() {
+        this.success = true;
+        this.errorMsg = "成功";
+        this.data = data;
     }
 
     public ResultVO(Boolean success, String errorMsg, Integer responseCode, T data) {
         this.success = true;
-        this.errorMsg = errorMsg;
-        this.responseCode = responseCode;
+        this.errorMsg = "成功";
         this.data = data;
     }
 }
