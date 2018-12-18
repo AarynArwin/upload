@@ -2,6 +2,7 @@ package com.chengnanhuakai.upload.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
  * @Version 1.0
  */
 @Component
+@PropertySource("classpath:application-dev.yml")
 @ConfigurationProperties(prefix = "qiniu")
 @Data
 public class Qiniu {
@@ -22,5 +24,7 @@ public class Qiniu {
     private String secretKey;
     /** 七牛云空间名称 */
     private String bucket;
+
+
 
 }
